@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "form_templates",
+  "info": {
+    "singularName": "form-template",
+    "pluralName": "form-templates",
+    "displayName": "from_template"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "templateCode": {
+      "type": "uid",
+      "required": true
+    },
+    "version": {
+      "type": "integer",
+      "min": 1
+    },
+    "groupType": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::group-type.group-type"
+    },
+    "mode": {
+      "type": "enumeration",
+      "enum": [
+        "teorijski",
+        "praktični"
+      ]
+    },
+    "isActive": {
+      "type": "boolean"
+    },
+    "validFrom": {
+      "type": "datetime"
+    },
+    "validTo": {
+      "type": "datetime"
+    }
+  }
+}

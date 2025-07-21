@@ -1,0 +1,14 @@
+{
+  "kind": "collectionType",
+  "collectionName": "group_types",
+  "info": {
+    "singularName": "group-type",
+    "pluralName": "group-types",
+    "displayName": "group_type"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {}
+}

@@ -373,6 +373,77 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiFormTemplateFormTemplate
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'form_templates';
+  info: {
+    displayName: 'from_template';
+    pluralName: 'form-templates';
+    singularName: 'form-template';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    groupType: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::group-type.group-type'
+    >;
+    isActive: Schema.Attribute.Boolean;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::form-template.form-template'
+    > &
+      Schema.Attribute.Private;
+    mode: Schema.Attribute.Enumeration<['teorijski', 'prakti\u010Dni']>;
+    publishedAt: Schema.Attribute.DateTime;
+    templateCode: Schema.Attribute.UID & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    validFrom: Schema.Attribute.DateTime;
+    validTo: Schema.Attribute.DateTime;
+    version: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      >;
+  };
+}
+
+export interface ApiGroupTypeGroupType extends Struct.CollectionTypeSchema {
+  collectionName: 'group_types';
+  info: {
+    displayName: 'group_type';
+    pluralName: 'group-types';
+    singularName: 'group-type';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::group-type.group-type'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -882,6 +953,8 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::form-template.form-template': ApiFormTemplateFormTemplate;
+      'api::group-type.group-type': ApiGroupTypeGroupType;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
