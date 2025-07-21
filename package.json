@@ -1,0 +1,16 @@
+{
+  "name": "angular-strapi-forms",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "strapi:develop": "npm run develop -w strapi"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "workspaces": [
+    "packages/strapi",
+    "packages/app"
+  ]
+}
