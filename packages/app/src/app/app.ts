@@ -1,7 +1,8 @@
 import { Component, inject, signal } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
-import { Main } from "../services/main.service";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { StateService } from "../services/state.service";
+import { AuthService } from "../services/auth.service";
 
 @Component({
     selector: "app-root",
@@ -11,6 +12,13 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 })
 export class App {
     protected readonly title = signal("app");
-    main = inject(Main);
-    didInject = this.main.login({ identifier: "asd", password: "asf" });
+    stateService = inject(StateService);
+    authService = inject(AuthService);
+
+    login() {
+        this.authService.login({
+            "identifier": "admin@test.com",
+            "password": "adminadmin",
+        });
+    }
 }
