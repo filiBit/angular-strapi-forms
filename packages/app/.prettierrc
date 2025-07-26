@@ -1,9 +1,12 @@
 {
+    "plugins": ["prettier-plugin-tailwindcss"],
     "overrides": [
         {
             "files": "*.html",
             "options": {
-                "parser": "angular"
+                "parser": "angular",
+                "htmlWhitespaceSensitivity": "ignore",
+                "bracketSameLine": true
             }
         }
     ]
