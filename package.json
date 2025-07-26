@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "strapi:develop": "npm run develop -w strapi"
+    "strapi:dev": "npm run develop -w strapi",
+    "app:dev": "npm run start -w app"
   },
   "author": "",
   "license": "ISC",
