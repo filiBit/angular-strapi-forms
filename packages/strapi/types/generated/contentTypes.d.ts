@@ -373,11 +373,48 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiFormSubmissionFormSubmission
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'form_submissions';
+  info: {
+    displayName: 'form_submission';
+    pluralName: 'form-submissions';
+    singularName: 'form-submission';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::form-submission.form-submission'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    submittedBy: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    template: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::form-template.form-template'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    values: Schema.Attribute.JSON & Schema.Attribute.Required;
+  };
+}
+
 export interface ApiFormTemplateFormTemplate
   extends Struct.CollectionTypeSchema {
   collectionName: 'form_templates';
   info: {
-    displayName: 'from_template';
+    displayName: 'form_template';
     pluralName: 'form-templates';
     singularName: 'form-template';
   };
@@ -388,6 +425,7 @@ export interface ApiFormTemplateFormTemplate
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    fields: Schema.Attribute.JSON & Schema.Attribute.Required;
     groupType: Schema.Attribute.Relation<
       'oneToOne',
       'api::group-type.group-type'
@@ -437,6 +475,9 @@ export interface ApiGroupTypeGroupType extends Struct.CollectionTypeSchema {
       'api::group-type.group-type'
     > &
       Schema.Attribute.Private;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -953,6 +994,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::form-submission.form-submission': ApiFormSubmissionFormSubmission;
       'api::form-template.form-template': ApiFormTemplateFormTemplate;
       'api::group-type.group-type': ApiGroupTypeGroupType;
       'plugin::content-releases.release': PluginContentReleasesRelease;

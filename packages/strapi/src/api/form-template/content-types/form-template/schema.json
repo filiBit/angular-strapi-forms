@@ -4,7 +4,7 @@
   "info": {
     "singularName": "form-template",
     "pluralName": "form-templates",
-    "displayName": "from_template"
+    "displayName": "form_template"
   },
   "options": {
     "draftAndPublish": false
@@ -39,6 +39,10 @@
     },
     "validTo": {
       "type": "datetime"
+    },
+    "fields": {
+      "type": "json",
+      "required": true
     }
   }
 }

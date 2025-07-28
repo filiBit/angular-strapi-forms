@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "form_submissions",
+  "info": {
+    "singularName": "form-submission",
+    "pluralName": "form-submissions",
+    "displayName": "form_submission"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "template": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::form-template.form-template"
+    },
+    "values": {
+      "type": "json",
+      "required": true
+    },
+    "submittedBy": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}
