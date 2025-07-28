@@ -1,7 +1,9 @@
 {
   "name": "angular-strapi-forms",
   "version": "1.0.0",
-  "main": "index.js",
+  "engines": {
+    "node": "22.14.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "strapi:dev": "npm run develop -w strapi",
