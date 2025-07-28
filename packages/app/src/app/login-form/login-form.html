@@ -1,0 +1,34 @@
+<h2 class="mb-4 text-2xl">Login</h2>
+
+<form (ngSubmit)="login($event)" class="flex max-w-[280px] flex-col">
+
+    <mat-form-field>
+
+        <mat-label>Username or email</mat-label>
+
+        <input
+            matInput
+            name="identifier"
+            type="text"
+            [(ngModel)]="identifier" />
+
+    </mat-form-field>
+
+    <mat-form-field>
+
+        <mat-label>Password</mat-label>
+
+        <input matInput name="password" type="text" [(ngModel)]="password" />
+
+    </mat-form-field>
+
+    <button matButton="filled" type="submit">Login</button>
+
+    @if (errorMessage) {
+
+        <span class="mt-4 text-red-700">{{ errorMessage }}</span>
+
+    }
+
+</form>
+
