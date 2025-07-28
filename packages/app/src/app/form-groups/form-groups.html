@@ -1,0 +1,79 @@
+<div class="w-100% grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+
+    @for (gt of groupTypes(); track gt.documentId) {
+
+        <mat-card>
+
+            <mat-card-header>
+
+                <mat-card-title>{{ gt.name }}</mat-card-title>
+
+            </mat-card-header>
+
+            <mat-card-content>
+
+                <div>Templates: {{ gt.size }}</div>
+
+            </mat-card-content>
+
+            <mat-card-actions class="mt-8 flex gap-2">
+
+                @if (authService.isAdmin) {
+
+                    <button
+                        matButton="filled"
+                        [routerLink]="'/groups/' + gt.documentId + '/view'">
+
+                        <mat-icon
+                            aria-hidden="false"
+                            aria-label="Visibility icon"
+                            fontIcon="visibility"></mat-icon>
+                         Open
+                    </button>
+
+                    <button
+                        matButton="filled"
+                        (click)="deleteGroupType(gt.documentId)">
+
+                        <mat-icon
+                            aria-hidden="false"
+                            aria-label="Delete icon"
+                            fontIcon="delete"></mat-icon>
+                         Delete
+                    </button>
+
+                }
+
+                @else {
+
+                    <button
+                        matButton="filled"
+                        [routerLink]="'/form/' + gt.documentId + '/fill'">
+
+                        <mat-icon
+                            aria-hidden="false"
+                            aria-label="Edit icon"
+                            fontIcon="edit"></mat-icon>
+                         Fill the form
+                    </button>
+
+                }
+
+            </mat-card-actions>
+
+        </mat-card>
+
+    }
+
+</div>
+
+<div class="absolute right-0 bottom-0 m-4 lg:m-8">
+
+    <button matFab extended (click)="openDialog()">
+
+        <mat-icon>add</mat-icon>
+         New group
+    </button>
+
+</div>
+
