@@ -5,6 +5,8 @@ import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { StateService } from "../../services/state.service";
 import { AuthService } from "../../services/auth.service";
+import { GroupTypeService } from "../../services/group-type.service";
+import { FormTemplateService } from "../../services/form-template.service";
 
 @Component({
     selector: "login-form",
@@ -13,6 +15,8 @@ import { AuthService } from "../../services/auth.service";
 })
 export class LoginForm {
     stateService = inject(StateService);
+    groupTypeService = inject(GroupTypeService);
+    formTemplateService = inject(FormTemplateService);
     authService = inject(AuthService);
 
     identifier = "";
@@ -28,6 +32,14 @@ export class LoginForm {
         }).catch((err: Error) => {
             console.log(err.message);
             this.errorMessage = err.message;
+        });
+
+        await Promise.all([
+            this.groupTypeService.getGroupTypes(),
+            this.formTemplateService.getFormTemplates(),
+        ]).then(([groupTypes, formTemplates]) => {
+            this.stateService.setGroupTypes(groupTypes);
+            this.stateService.setFormTemplates(formTemplates);
         });
 
         this.stateService.initialize();
