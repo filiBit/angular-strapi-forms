@@ -17,6 +17,10 @@ export class AuthService {
         return !!this.jwt && !!this.user;
     }
 
+    get isAdmin() {
+        return this.user?.role === UserRole.AUTHENTICATED;
+    }
+
     async login(
         { identifier, password }: { identifier: string; password: string },
     ) {
