@@ -57,7 +57,7 @@ export class FormTemplateService {
                     ],
                 },
             ).then((res) =>
-                res.json() as unknown as StrapiResponse<FormTemplateDTO>
+                res.json() as unknown as StrapiResponse<FormTemplateDTO[]>
             ).then((b) => {
                 result.push(
                     ...b.data.map((ft) => ({
