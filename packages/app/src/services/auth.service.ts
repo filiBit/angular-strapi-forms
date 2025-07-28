@@ -1,8 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { environment } from "../environments/environment";
-import { User } from "../app/types/user";
-import { StrapiErrorResponse } from "../app/types/strapi-error-response";
+import { StrapiErrorResponse } from "../types/strapi-error-response";
+import { UserDto } from "../types/user-dto";
+import { User } from "../types/user";
+import { UserRole } from "../types/user-role";
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
@@ -15,13 +17,13 @@ export class AuthService {
         return !!this.jwt && !!this.user;
     }
 
-    login(
+    async login(
         { identifier, password }: { identifier: string; password: string },
     ) {
         this.jwt = null;
         this.user = null;
 
-        return fetch(
+        const jwt = await fetch(
             `${environment.strapiUrl}/auth/local`,
             {
                 method: "post",
@@ -37,16 +39,28 @@ export class AuthService {
                 this.user = null;
                 throw await res.json();
             }
-            return res.json() as Promise<{ jwt: string; user: User }>;
+            return res.json() as Promise<{ jwt: string; user: UserDto }>;
         })
             .then((body) => {
-                this.jwt = body.jwt;
-                this.user = body.user;
-                return null;
+                return body.jwt;
             }).catch((err: StrapiErrorResponse) => {
                 throw new Error(
                     err.error.details?.errors?.[0].message || err.error.message,
                 );
             });
+
+        const user = await fetch(
+            `${environment.strapiUrl}/users/me?populate=*`,
+            {
+                headers: [["Authorization", `Bearer ${jwt}`]],
+            },
+        ).then(
+            (res) => res.json() as Promise<UserDto>,
+        ).then((body) => {
+            return body;
+        });
+
+        this.jwt = jwt;
+        this.user = { ...user, role: user.role.type as UserRole };
     }
 }
