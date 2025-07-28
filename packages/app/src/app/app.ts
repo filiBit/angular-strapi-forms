@@ -1,24 +1,13 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { StateService } from "../services/state.service";
-import { AuthService } from "../services/auth.service";
 
 @Component({
     selector: "app-root",
-    imports: [RouterOutlet, MatSlideToggleModule],
+    imports: [
+        RouterOutlet,
+    ],
     templateUrl: "./app.html",
     styleUrl: "./app.css",
 })
 export class App {
-    protected readonly title = signal("app");
-    stateService = inject(StateService);
-    authService = inject(AuthService);
-
-    login() {
-        this.authService.login({
-            "identifier": "admin@test.com",
-            "password": "adminadmin",
-        });
-    }
 }

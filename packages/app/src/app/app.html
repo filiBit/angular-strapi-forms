@@ -1,9 +1,6 @@
-<main>
-    <p>Hello</p>
-    @if (authService.jwt && authService.user) {
-        <p>{{ authService.jwt }}</p>
-        <p>{{ authService.user.email }}</p>
-    } @else {
-        <button (click)="login()">Login</button>
-    }
+<main class="mx-auto flex max-w-[700px] flex-col items-center">
+
+    <router-outlet />
+
 </main>
+
