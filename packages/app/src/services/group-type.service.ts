@@ -36,8 +36,14 @@ export class GroupTypeService {
     }
 
     async deleteGroupType(id: string): Promise<void> {
-        fetch(`${environment.strapiUrl}/group-types/${id}`, {
+        return fetch(`${environment.strapiUrl}/group-types/${id}`, {
             method: "delete",
+        }).then((res) => {
+            if (res.status !== 200) {
+                throw new Error(
+                    `Failed to delete a GroupType with id of ${id}`,
+                );
+            }
         });
     }
 }

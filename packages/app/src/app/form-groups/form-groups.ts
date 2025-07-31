@@ -83,7 +83,9 @@ export class FormGroups {
     deleteGroupType(id: string) {
         this.groupTypeService.deleteGroupType(id).then(() =>
             this.stateService.deleteGroupType(id)
-        );
+        ).catch((err) => {
+            console.log(err);
+        });
     }
 }
 
