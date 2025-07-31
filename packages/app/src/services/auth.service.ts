@@ -89,4 +89,10 @@ export class AuthService {
             user,
         });
     }
+
+    async logout() {
+        this.stateService.setAuth(null);
+        this.stateService.setFormTemplates([]);
+        this.stateService.setGroupTypes([]);
+    }
 }
