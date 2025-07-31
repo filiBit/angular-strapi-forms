@@ -3,6 +3,7 @@ import { RouterOutlet } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { StateService } from "../services/state.service";
+import { AuthService } from "../services/auth.service";
 
 @Component({
     selector: "app-root",
@@ -16,6 +17,7 @@ import { StateService } from "../services/state.service";
 })
 export class App {
     stateService = inject(StateService);
+    authService = inject(AuthService);
 
     user = computed(() => this.stateService.getAuth()?.user);
 }
