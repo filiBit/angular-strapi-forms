@@ -1,39 +1,56 @@
 import {
     computed,
-    inject,
+    effect,
     Injectable,
     Signal,
     signal,
     WritableSignal,
 } from "@angular/core";
-import { AuthService } from "./auth.service";
-import { GroupTypeService } from "./group-type.service";
-import { FormTemplate, FormTemplateService } from "./form-template.service";
+import { FormTemplate } from "./form-template.service";
 import { GroupType } from "../types/group-type";
+import { User } from "../types/user";
 
 enum StateKey {
     GROUP_TYPES = "GROUP_TYPES",
     FORM_TEMPLATES = "FORM_TEMPLATES ",
+    AUTH = "AUTH",
 }
+
+enum PersistKey {
+    JWT = "JWT",
+}
+
+interface State {
+    [StateKey.AUTH]: null;
+    [StateKey.FORM_TEMPLATES]: FormTemplate[];
+    [StateKey.GROUP_TYPES]: GroupType[];
+}
+
+const initialState: State = {
+    [StateKey.AUTH]: null,
+    [StateKey.FORM_TEMPLATES]: [],
+    [StateKey.GROUP_TYPES]: [],
+};
 
 @Injectable({ providedIn: "root" })
 export class StateService {
-    authService = inject(AuthService);
-    groupTypeService = inject(GroupTypeService);
-    formTemplateService = inject(FormTemplateService);
+    private readonly state: WritableSignal<State> = signal(initialState);
+    isInitialized: Signal<boolean> = signal(false);
 
-    private readonly state: WritableSignal<[string, unknown][]> = signal([]);
-    isInitialized: boolean = false;
-
-    get(key: string): unknown {
-        return this.state().find((el) => el[0] === key)?.[1];
+    constructor() {
+        this.hydrate();
+        effect(() => {
+            console.log("persist");
+            this.persist();
+        });
     }
 
-    private set(key: string, value: unknown) {
-        this.state.set([...this.state().filter((el) => el[0] !== key), [
-            key,
-            value,
-        ]]);
+    get(key: StateKey): unknown {
+        return this.state()[key];
+    }
+
+    private set(key: StateKey, value: unknown) {
+        this.state.set({ ...this.state(), [key]: value });
     }
 
     get formTemplates(): Signal<FormTemplate[]> {
@@ -44,14 +61,6 @@ export class StateService {
 
     get groupTypes(): Signal<GroupType[]> {
         return computed(() => this.get(StateKey.GROUP_TYPES) as GroupType[]);
-    }
-
-    async initialize(): Promise<void> {
-        if (!this.authService.isLoggedIn) {
-            throw new Error("Can't initialize if user is logged out");
-        }
-
-        this.isInitialized = true;
     }
 
     setGroupTypes(groupTypes: GroupType[]) {
@@ -76,5 +85,38 @@ export class StateService {
                 el.documentId !== id
             ),
         );
+    }
+
+    setAuth(authData: null | { jwt: string; user: null | User }) {
+        this.set(StateKey.AUTH, authData);
+    }
+
+    getAuth(): null | { jwt: string; user: null | User } {
+        return (this.get(StateKey.AUTH) || null) as null | {
+            jwt: string;
+            user: User;
+        };
+    }
+
+    hydrate() {
+        const jwt = localStorage.getItem(PersistKey.JWT);
+
+        if (jwt?.length) {
+            this.setAuth({ jwt, user: null });
+        }
+    }
+
+    persist(): void {
+        const authData = this.getAuth();
+
+        if (authData?.jwt) {
+            localStorage.setItem(
+                PersistKey.JWT,
+                authData.jwt,
+            );
+            return;
+        }
+
+        localStorage.removeItem(PersistKey.JWT);
     }
 }
