@@ -30,7 +30,6 @@ export class LoginForm {
             identifier: this.identifier,
             password: this.password,
         }).catch((err: Error) => {
-            console.log(err.message);
             this.errorMessage = err.message;
         });
 
@@ -41,7 +40,5 @@ export class LoginForm {
             this.stateService.setGroupTypes(groupTypes);
             this.stateService.setFormTemplates(formTemplates);
         });
-
-        this.stateService.initialize();
     }
 }
