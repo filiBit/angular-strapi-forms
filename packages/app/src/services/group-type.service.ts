@@ -1,14 +1,26 @@
-import { inject, Injectable } from "@angular/core";
+import { effect, inject, Injectable } from "@angular/core";
 import { environment } from "../environments/environment";
 import { GroupType } from "../types/group-type";
 import { StrapiResponse } from "../types/strapi-response";
 import { AuthService } from "./auth.service";
+import { StateService } from "./state.service";
 
 @Injectable({
     providedIn: "root",
 })
 export class GroupTypeService {
     authService = inject(AuthService);
+    stateService = inject(StateService);
+
+    constructor() {
+        effect(() => {
+            if (this.authService.isLoggedIn()) {
+                this.getGroupTypes().then((res) =>
+                    this.stateService.setGroupTypes(res)
+                );
+            }
+        });
+    }
 
     getGroupTypes(): Promise<GroupType[]> {
         return fetch(
