@@ -1,31 +1,62 @@
-import { HttpClient } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
+import { computed, inject, Injectable, Signal } from "@angular/core";
 import { environment } from "../environments/environment";
 import { StrapiErrorResponse } from "../types/strapi-error-response";
 import { UserDto } from "../types/user-dto";
 import { User } from "../types/user";
 import { UserRole } from "../types/user-role";
+import { StateService } from "./state.service";
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
-    private readonly http = inject(HttpClient);
+    stateService = inject(StateService);
 
-    jwt: null | string = null;
-    user: null | User = null;
-
-    get isLoggedIn(): boolean {
-        return !!this.jwt && !!this.user;
+    constructor() {
+        const jwt = this.jwt();
+        if (!this.isLoggedIn() && !!jwt) {
+            this.fetchUser(jwt).then((user) =>
+                this.stateService.setAuth({ jwt, user })
+            ).catch((err) => console.log(err));
+        }
     }
 
+    isLoggedIn: Signal<boolean> = computed(() => !!this.jwt() && !!this.user());
+
     get isAdmin() {
-        return this.user?.role === UserRole.AUTHENTICATED;
+        return this.user()?.role === UserRole.AUTHENTICATED;
+    }
+
+    get user(): Signal<null | User> {
+        return computed(() => this.stateService.getAuth()?.user || null);
+    }
+
+    jwt: Signal<null | string> = computed(() =>
+        this.stateService.getAuth()?.jwt || null
+    );
+
+    private async fetchUser(jwt: string): Promise<User> {
+        const user = await fetch(
+            `${environment.strapiUrl}/users/me?populate=*`,
+            {
+                headers: [["Authorization", `Bearer ${jwt}`]],
+            },
+        ).then(
+            (res) => {
+                if (res.status !== 200) {
+                    throw new Error("Failed to fetch user data");
+                }
+                return res.json() as Promise<UserDto>;
+            },
+        ).then((body) => {
+            return body;
+        });
+
+        return { ...user, role: user.role.type as UserRole };
     }
 
     async login(
         { identifier, password }: { identifier: string; password: string },
     ) {
-        this.jwt = null;
-        this.user = null;
+        this.stateService.setAuth(null);
 
         const jwt = await fetch(
             `${environment.strapiUrl}/auth/local`,
@@ -39,8 +70,6 @@ export class AuthService {
             },
         ).then(async (res) => {
             if (res.status !== 200) {
-                this.jwt = null;
-                this.user = null;
                 throw await res.json();
             }
             return res.json() as Promise<{ jwt: string; user: UserDto }>;
@@ -53,18 +82,11 @@ export class AuthService {
                 );
             });
 
-        const user = await fetch(
-            `${environment.strapiUrl}/users/me?populate=*`,
-            {
-                headers: [["Authorization", `Bearer ${jwt}`]],
-            },
-        ).then(
-            (res) => res.json() as Promise<UserDto>,
-        ).then((body) => {
-            return body;
-        });
+        const user = await this.fetchUser(jwt);
 
-        this.jwt = jwt;
-        this.user = { ...user, role: user.role.type as UserRole };
+        this.stateService.setAuth({
+            jwt,
+            user,
+        });
     }
 }
