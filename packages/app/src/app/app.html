@@ -1,36 +1,31 @@
-<main class="w-100% mx-auto flex max-w-[700px] flex-col items-center">
 
-    <header
-        class="flex w-[100%] !flex-col justify-between !bg-purple-300 px-4 py-2 md:!flex-row">
+<header
+    class="flex h-16 w-[100%] !flex-col justify-between !bg-purple-800 px-4 text-white md:!flex-row">
 
-        <span class="!self-start text-lg md:!self-center">Form app</span>
+    <span class="!self-start text-xl md:!self-center">Form app</span>
 
-        @if (user()) {
+    @if (user()) {
 
-            <div
-                class="text-md flex items-center gap-4 !self-end md:!self-center">
+        <div class="text-md flex items-center gap-8 !self-end md:!self-center">
+
+            <div class="flex items-center gap-4">
                  {{ user()!.username }} | {{ user()!.role }}
-                <button
-                    matIconButton
-                    class="User icon"
-                    aria-label="Example icon-button with share icon">
-
-                    <mat-icon>person</mat-icon>
-
-                </button>
-
-                <button
-                    matButton="filled"
-                    aria-label="Example icon-button with share icon"
-                    (click)="authService.logout()">
-                     Logout
-                </button>
+                <mat-icon>person</mat-icon>
 
             </div>
 
-        }
+            <button matButton="tonal" (click)="authService.logout()">
+                 Logout
+            </button>
 
-    </header>
+        </div>
+
+    }
+
+</header>
+
+<main
+    class="w-100% mx-auto flex max-w-[700px] flex-col items-center p-4 lg:p-8">
 
     <router-outlet />
 
