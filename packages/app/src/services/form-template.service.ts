@@ -1,7 +1,8 @@
-import { inject, Injectable } from "@angular/core";
+import { effect, inject, Injectable } from "@angular/core";
 import { environment } from "../environments/environment";
 import { AuthService } from "./auth.service";
 import { StrapiResponse } from "../types/strapi-response";
+import { StateService } from "./state.service";
 
 export interface FormTemplateDTO {
     id: number;
@@ -43,6 +44,17 @@ export interface FormTemplate {
 })
 export class FormTemplateService {
     authService = inject(AuthService);
+    stateService = inject(StateService);
+
+    constructor() {
+        effect(() => {
+            if (this.authService.isLoggedIn()) {
+                this.getFormTemplates().then((res) =>
+                    this.stateService.setFormTemplates(res)
+                );
+            }
+        });
+    }
 
     async getFormTemplates(): Promise<FormTemplate[]> {
         let nextPage = 1;
@@ -50,7 +62,7 @@ export class FormTemplateService {
 
         do {
             await fetch(
-                `${environment.strapiUrl}/form-templates?populate[groupType][fields][0]=name&pagination[page]=${nextPage}`,
+                `${environment.strapiUrl}/form-templates?populate[groupType][fields][0]=documentId&pagination[page]=${nextPage}`,
                 {
                     headers: [
                         ["Authorization", `Bearer ${this.authService.jwt}`],
