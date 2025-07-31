@@ -70,12 +70,10 @@ export class FormGroups {
         });
 
         dialogRef.afterClosed().subscribe(async (result) => {
-            console.log("The dialog was closed");
             if (result !== undefined) {
-                const groupType = await this.groupTypeService.createGroupType({
+                await this.groupTypeService.createGroupType({
                     name: result,
                 });
-                this.stateService.addGroupType(groupType);
             }
         });
     }

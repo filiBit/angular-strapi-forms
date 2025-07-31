@@ -25,14 +25,20 @@ export class GroupTypeService {
     getGroupTypes(): Promise<GroupType[]> {
         return fetch(
             `${environment.strapiUrl}/group-types`,
-        ).then((res) => res.json() as Promise<StrapiResponse<GroupType[]>>)
-            .then((b) => b.data);
+        ).then((res) => {
+            if (res.status < 200 || res.status >= 300) {
+                throw new Error(
+                    `Failed to fetch GroupTypes`,
+                );
+            }
+            return res.json() as Promise<StrapiResponse<GroupType[]>>;
+        }).then((body) => body.data);
     }
 
     async createGroupType(
         { name }: { name: string },
     ): Promise<GroupType> {
-        return await fetch(
+        const groupType = await fetch(
             `${environment.strapiUrl}/group-types`,
             {
                 method: "post",
@@ -42,16 +48,25 @@ export class GroupTypeService {
                     ["Content-type", "application/json"],
                 ],
             },
-        ).then((res) => res.json() as Promise<StrapiResponse<GroupType>>).then((
-            b,
-        ) => b.data);
+        ).then((res) => {
+            if (res.status < 200 || res.status >= 300) {
+                throw new Error(
+                    `Failed to create a GroupType with name "${name}"`,
+                );
+            }
+            return res.json() as Promise<StrapiResponse<GroupType>>;
+        }).then((body) => body.data);
+
+        this.stateService.addGroupType(groupType);
+
+        return groupType;
     }
 
     async deleteGroupType(id: string): Promise<void> {
         return fetch(`${environment.strapiUrl}/group-types/${id}`, {
             method: "delete",
         }).then((res) => {
-            if (res.status !== 200) {
+            if (res.status < 200 || res.status >= 300) {
                 throw new Error(
                     `Failed to delete a GroupType with id of ${id}`,
                 );
