@@ -6,11 +6,12 @@ import {
     RouterStateSnapshot,
     Routes,
 } from "@angular/router";
-import { HomePage } from "./pages/home/home-page";
+import { HomePage } from "./home-page/home-page";
 import { FormGroupDetails } from "./form-group-details/form-group-details";
 import { NotFound } from "./not-found/not-found";
 import { inject } from "@angular/core";
 import { AuthService } from "../services/auth.service";
+import { FormTemplateEditor } from "./form-template-editor/form-template-editor";
 
 export const adminGuard: CanActivateFn = (
     route: ActivatedRouteSnapshot,
@@ -22,14 +23,20 @@ export const adminGuard: CanActivateFn = (
     return authService.isAdmin() || new RedirectCommand(homePath);
 };
 
-export const routes: Routes = [{
-    path: "",
-    component: HomePage,
-}, {
-    path: "groups/:id",
-    component: FormGroupDetails,
-    canActivate: [adminGuard],
-}, {
-    path: "**",
-    component: NotFound,
-}];
+export const routes: Routes = [
+    {
+        path: "",
+        component: HomePage,
+    },
+    {
+        path: "groups/:id",
+        component: FormGroupDetails,
+        canActivate: [adminGuard],
+    },
+
+    { path: "groups/:id/new-template", component: FormTemplateEditor },
+    {
+        path: "**",
+        component: NotFound,
+    },
+];
