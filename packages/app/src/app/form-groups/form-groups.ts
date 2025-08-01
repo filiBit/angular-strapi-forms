@@ -19,6 +19,7 @@ import {
 import { GroupTypeService } from "../../services/group-type.service";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+import { LayoutNarrow } from "../layout-narrow/layout-narrow";
 
 export interface DialogData {
     name: string;
@@ -33,6 +34,7 @@ export interface DialogData {
         MatIconModule,
         RouterLink,
         MatDialogClose,
+        LayoutNarrow,
     ],
     styles: `:host {width: 100%;}`,
 })

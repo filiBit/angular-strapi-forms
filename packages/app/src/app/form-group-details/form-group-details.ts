@@ -9,8 +9,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { GroupType } from "../../types/group-type";
-import { NotFound } from "../not-found/not-found";
-import { Breadcrumbs } from "../components/breadcrumps/breadcrumbs";
+import { LayoutNarrow } from "../layout-narrow/layout-narrow";
 
 @Component({
     selector: "form-group-details",
@@ -19,6 +18,8 @@ import { Breadcrumbs } from "../components/breadcrumps/breadcrumbs";
         MatCardModule,
         MatIconModule,
         MatButtonModule,
+        RouterLink,
+        LayoutNarrow,
     ],
 })
 export class FormGroupDetails {

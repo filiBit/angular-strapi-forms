@@ -1,15 +1,18 @@
+<layout-narrow>
 
-@if (authService.isLoggedIn()) {
+    @if (authService.isLoggedIn()) {
 
-    <h1 class="mb-8 text-3xl">Form groups</h1>
+        <h1 class="mb-8 text-3xl">Form groups</h1>
 
-    <form-groups></form-groups>
+        <form-groups></form-groups>
 
-}
+    }
 
-@else {
+    @else {
 
-    <login-form></login-form>
+        <login-form></login-form>
 
-}
+    }
+
+</layout-narrow>
 

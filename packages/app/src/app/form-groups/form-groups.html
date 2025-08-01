@@ -1,79 +1,83 @@
-<div class="w-100% grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+<layout-narrow>
 
-    @for (gt of groupTypes(); track gt.documentId) {
+    <div class="w-100% grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 
-        <mat-card>
+        @for (gt of groupTypes(); track gt.documentId) {
 
-            <mat-card-header>
+            <mat-card>
 
-                <mat-card-title>{{ gt.name }}</mat-card-title>
+                <mat-card-header>
 
-            </mat-card-header>
+                    <mat-card-title>{{ gt.name }}</mat-card-title>
 
-            <mat-card-content>
+                </mat-card-header>
 
-                <div>Templates: {{ gt.size }}</div>
+                <mat-card-content>
 
-            </mat-card-content>
+                    <div>Templates: {{ gt.size }}</div>
 
-            <mat-card-actions class="mt-8 flex gap-2">
+                </mat-card-content>
 
-                @if (authService.isAdmin()) {
+                <mat-card-actions class="mt-8 flex gap-2">
 
-                    <button
-                        matButton="tonal"
-                        [routerLink]="'/groups/' + gt.documentId">
+                    @if (authService.isAdmin()) {
 
-                        <mat-icon
-                            aria-hidden="false"
-                            aria-label="Visibility icon"
-                            fontIcon="visibility"></mat-icon>
-                         Open
-                    </button>
+                        <button
+                            matButton="tonal"
+                            [routerLink]="'/groups/' + gt.documentId">
 
-                    <button
-                        matButton="tonal"
-                        (click)="deleteGroupType(gt.documentId)">
+                            <mat-icon
+                                aria-hidden="false"
+                                aria-label="Visibility icon"
+                                fontIcon="visibility"></mat-icon>
+                             Open
+                        </button>
 
-                        <mat-icon
-                            aria-hidden="false"
-                            aria-label="Delete icon"
-                            fontIcon="delete"></mat-icon>
-                         Delete
-                    </button>
+                        <button
+                            matButton="tonal"
+                            (click)="deleteGroupType(gt.documentId)">
 
-                }
+                            <mat-icon
+                                aria-hidden="false"
+                                aria-label="Delete icon"
+                                fontIcon="delete"></mat-icon>
+                             Delete
+                        </button>
 
-                @else {
+                    }
 
-                    <button
-                        matButton="filled"
-                        [routerLink]="'/form/' + gt.documentId + '/fill'">
+                    @else {
 
-                        <mat-icon
-                            aria-hidden="false"
-                            aria-label="Edit icon"
-                            fontIcon="edit"></mat-icon>
-                         Fill the form
-                    </button>
+                        <button
+                            matButton="filled"
+                            [routerLink]="'/form/' + gt.documentId + '/fill'">
 
-                }
+                            <mat-icon
+                                aria-hidden="false"
+                                aria-label="Edit icon"
+                                fontIcon="edit"></mat-icon>
+                             Fill the form
+                        </button>
 
-            </mat-card-actions>
+                    }
 
-        </mat-card>
+                </mat-card-actions>
 
-    }
+            </mat-card>
 
-</div>
+        }
 
-<div class="absolute right-0 bottom-0 m-4 lg:m-8">
+    </div>
 
-    <button matFab extended (click)="openDialog()">
+    <div class="absolute right-0 bottom-0 m-4 lg:m-8">
 
-        <mat-icon>add</mat-icon>
-         New group
-    </button>
+        <button matFab extended (click)="openDialog()">
 
-</div>
+            <mat-icon>add</mat-icon>
+             New group
+        </button>
+
+    </div>
+
+</layout-narrow>
 
