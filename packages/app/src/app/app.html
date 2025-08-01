@@ -1,8 +1,22 @@
 
 <header
-    class="flex h-16 w-[100%] !flex-col justify-between !bg-purple-800 px-4 text-white md:!flex-row">
+    class="flex h-16 w-[100%] !flex-col justify-between !bg-purple-800 px-4 !text-white md:!flex-row">
 
-    <span class="!self-start text-xl md:!self-center">Form app</span>
+    <div class="flex items-center gap-4">
+
+        <span class="!self-start text-xl md:!self-center"> Form app </span>
+
+        <a [routerLink]="'/'">
+
+            <button matIconButton class="!text-white">
+
+                <mat-icon>home</mat-icon>
+
+            </button>
+
+        </a>
+
+    </div>
 
     @if (user()) {
 
@@ -14,9 +28,7 @@
 
             </div>
 
-            <button matButton="tonal" (click)="authService.logout()">
-                 Logout
-            </button>
+            <button matButton="tonal" (click)="logout()"> Logout </button>
 
         </div>
 
