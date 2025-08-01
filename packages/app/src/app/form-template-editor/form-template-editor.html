@@ -1,0 +1,54 @@
+<mat-drawer-container class="flex min-h-[100%] !w-[100%] grow flex-col">
+
+    <mat-drawer
+        #drawer
+        [opened]="isSidebarOpen()"
+        mode="side"
+        position="end"
+        autosize
+        class="!min-h-100% !bg-purple-200 p-6">
+
+        <p class="mb-6 font-bold">Select a field</p>
+
+        <div class="flex flex-col items-stretch gap-3">
+
+            <button matButton="outlined">Short text</button>
+
+            <button matButton="outlined">Long text</button>
+
+            <button matButton="outlined">Number</button>
+
+            <button matButton="outlined">Date text</button>
+
+            <button matButton="outlined">Checkbox</button>
+
+        </div>
+
+    </mat-drawer>
+
+    <form [formGroup]="ftFormGroup" class="p-8">
+
+        <mat-radio-group aria-label="Mode">
+
+            <mat-label>Mode</mat-label>
+
+            <mat-radio-button value="teorijski">teorijski</mat-radio-button>
+
+            <mat-radio-button value="praktični">Praktični</mat-radio-button>
+
+        </mat-radio-group>
+
+    </form>
+
+</mat-drawer-container>
+
+<div class="fixed right-0 bottom-0 z-10 m-4 lg:m-8">
+
+    <button matFab extended (click)="toggleSidebar()">
+
+        <mat-icon>{{ isSidebarOpen() ? "close" : "add" }}</mat-icon>
+         {{ isSidebarOpen() ? "Close" : "Add field" }}
+    </button>
+
+</div>
+
