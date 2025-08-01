@@ -21,9 +21,9 @@ export class AuthService {
 
     isLoggedIn: Signal<boolean> = computed(() => !!this.jwt() && !!this.user());
 
-    get isAdmin() {
-        return this.user()?.role === UserRole.AUTHENTICATED;
-    }
+    isAdmin: Signal<boolean> = computed(() =>
+        this.user()?.role === UserRole.AUTHENTICATED
+    );
 
     get user(): Signal<null | User> {
         return computed(() => this.stateService.getAuth()?.user || null);

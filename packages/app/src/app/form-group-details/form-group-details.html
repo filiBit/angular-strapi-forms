@@ -1,0 +1,53 @@
+@if (formTemplates().length === 0) {
+
+    <div>No templates in this group</div>
+
+}
+
+@for (ft of formTemplates(); track ft.documentId) {
+
+    <mat-card>
+
+        <mat-card-header>
+
+            <mat-card-title>Version {{ ft.version }}</mat-card-title>
+
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <div>
+
+                <mat-icon
+                    aria-hidden="false"
+                    aria-label="Visibility icon"
+                    fontIcon="check"></mat-icon>
+                 {{ ft.isActive ? "Active" : "Inactive" }}
+            </div>
+
+        </mat-card-content>
+
+        <mat-card-actions>
+
+            <button matButton="filled">
+
+                <mat-icon fontIcon="edit"></mat-icon>
+                 Edit
+            </button>
+
+        </mat-card-actions>
+
+    </mat-card>
+
+}
+
+<div class="absolute right-0 bottom-0 m-4 lg:m-8">
+
+    <button matFab extended (click)="openDialog()">
+
+        <mat-icon>add</mat-icon>
+         New template
+    </button>
+
+</div>
+
